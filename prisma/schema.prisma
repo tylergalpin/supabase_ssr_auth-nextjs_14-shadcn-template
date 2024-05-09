@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
@@ -20,4 +21,60 @@ model views {
   id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
   name       String?
+}
+
+model Room {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name    String?  @db.VarChar(255)
+  email   String   @unique @db.VarChar(255)
+  room       Room[]
+  UserProfile UserProfile?
+}
+
+model UserProfile {
+  id                Int      @id @default(autoincrement())
+  userId            Int      @unique
+  name              String?
+  age               Int?
+  gender            String?
+  avatarUrl         String?
+  bioTitle          String?
+  bioDescription    String?
+  bioPhone          String?
+  bioGender         String?
+  bioAge            Int?
+  bioLocation       String?
+  bioLanguages      String[]
+  moveDate          String?
+  moveLocations     String[]
+  moveBudget        Int?
+  personalSmoker    Boolean?
+  personalWork      String?
+  personalStudent   Boolean?
+  personalAllergies String[]
+  personalPets      Boolean?
+  personalPetsTypes String[]
+  socialInstagram   String?
+  socialTwitter     String?
+  socialFacebook    String?
+  socialLinkedin    String?
+  socialWebsite     String?
+  socialSpotify     String?
+  socialYoutube     String?
+  socialTiktok      String?
+  socialTwitch      String?
+  socialPinterest   String?
+  socialReddit      String?
+  socialDiscord     String?
+  socialSnapchat    String?
+  user              User     @relation(fields: [userId], references: [id])
 }
